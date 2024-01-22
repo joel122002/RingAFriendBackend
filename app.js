@@ -18,7 +18,6 @@ app.post('/send-notification', hasFields(['token', 'message']), function (req, r
             message: body.message
         },
         token: body.token,
-        priority: 'high'
     };
     getMessaging().send(message).then((response) => {
         res.sendStatus(204);
