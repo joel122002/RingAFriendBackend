@@ -32,6 +32,10 @@ POSTGRESQL_USER="username"
 POSTGRESQL_PASSWORD="password"
 POSTGRESQL_HOST="localhost"
 POSTGRESQL_DATABASE="ringafriend" # do not change
+
+# Variables
+COOKIE_SECRET="Your cookie secret here"
+
 ```
 Run the app
 ```bash
