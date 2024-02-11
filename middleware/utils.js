@@ -41,5 +41,10 @@ export function validateKeys(keys, validators) {
     };
 }
 
+export function isAuthenticated(req, res, next) {
+    if (req?.user) {
+        next();
+    } else {
+        return res.sendStatus(401);
     }
 }
