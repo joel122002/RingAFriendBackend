@@ -4,6 +4,7 @@ dotenv.config();
 import express from 'express';
 import {
     hasFields,
+    isAuthenticated,
     validateKeys,
 } from './middleware/utils.js';
 import admin from 'firebase-admin';
@@ -20,7 +21,7 @@ import { emailValidator, usernameValidator } from './utils/validators.js';
 
 const app = express();
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
 });
 
 passport.use(
@@ -114,20 +115,41 @@ passport.deserializeUser(function (user, cb) {
 });
 app.get('/send-notification/:token', function (req, res) {
     const body = req.body;
-    const token = req.params.token
-    console.log(token, req.params)
+    const token = req.params.token;
+    console.log(token, req.params);
     const message = {
         data: {
-            message: ""
+            message: '',
         },
         token: token,
     };
-    getMessaging().send(message).then((response) => {
+    getMessaging()
+        .send(message)
+        .then((response) => {
+            res.sendStatus(204);
+        })
+        .catch((error) => {
+            res.status(500);
+            res.send({
+                error: `Error sending message: ${error}`,
+            });
+        });
+});
+
+app.post(
+    '/register-device',
+    isAuthenticated,
+    hasFields(['token', 'device_name']),
+    async function (req, res) {
+        const body = req.body;
+        let response = await client.query(
+            'INSERT INTO main.user_devices (user_id, token, device_name) VALUES ($1::uuid, $2::text, $3::varchar) RETURNING *',
+            [req.user.id, body.token, body.device_name]
+        );
         res.sendStatus(204);
-    }).catch((error) => {
-        res.status(500);
-        res.send({
-            message: `Error sending message: ${error}`
+    }
+);
+
 // traditional route handler, passed req/res
 app.post('/login', function (req, res, next) {
     // generate the authenticate method (the anonymous method) and
