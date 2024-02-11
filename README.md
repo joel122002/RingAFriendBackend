@@ -25,6 +25,14 @@ Create the schemas needed
   psql -U username -f db.sql
   psql -U username -d ringafriend -f node_modules/connect-pg-simple/table.sql 
 ```
+Set up the environment variables. To do that create a `.env` file with the following values
+```bash
+# PostgreSQL
+POSTGRESQL_USER="username"
+POSTGRESQL_PASSWORD="password"
+POSTGRESQL_HOST="localhost"
+POSTGRESQL_DATABASE="ringafriend" # do not change
+```
 Run the app
 ```bash
   node app.js 
