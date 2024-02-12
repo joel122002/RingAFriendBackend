@@ -141,7 +141,7 @@ app.get('/send-notification/:token', function (req, res) {
         })
         .catch((error) => {
             res.status(500);
-            res.send({
+            return res.send({
                 error: `Error sending message: ${error}`,
             });
         });
@@ -160,13 +160,13 @@ app.post(
             );
             res.sendStatus(204);
         } catch (e) {
-            console.error(e);
             if (e.code === '23505') {
                 res.status(400);
                 return res.send({
                     error: 'Device already registered',
                 });
             }
+            console.error(e);
         }
     }
 );
@@ -195,6 +195,7 @@ app.post('/login', function (req, res, next) {
         });
     })(req, res, next);
 });
+
 app.post('/logout', function (req, res, next) {
     req.logout(function (err) {
         if (err) {
@@ -239,7 +240,6 @@ app.post(
                         res.send();
                     });
                 } catch (e) {
-                    console.error(e);
                     if (e.code === '23505') {
                         if (e.constraint === 'users_email_key') {
                             res.status(400);
@@ -254,11 +254,13 @@ app.post(
                             });
                         }
                     }
+                    console.error(e);
                 }
             }
         );
     }
 );
+
     });
 });
 
