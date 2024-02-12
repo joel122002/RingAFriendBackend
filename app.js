@@ -158,7 +158,9 @@ app.post(
                 'INSERT INTO main.user_devices (user_id, token, device_name) VALUES ($1::uuid, $2::text, $3::varchar) RETURNING *',
                 [req.user.id, body.token, body.device_name]
             );
-            res.sendStatus(204);
+            if (response.rows.length > 0 && response.rows[0]) {
+                return res.sendStatus(204);
+            }
         } catch (e) {
             if (e.code === '23505') {
                 res.status(400);
