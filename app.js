@@ -90,21 +90,6 @@ app.use(passport.session());
 passport.serializeUser(function (user, cb) {
     process.nextTick(function () {
         cb(null, { id: user.id, username: user.username });
-app.post('/send-notification', hasFields(['token', 'message']), function (req, res) {
-    const body = req.body;
-    const message = {
-        data: {
-            message: body.message
-        },
-        token: body.token,
-    };
-    getMessaging().send(message).then((response) => {
-        res.sendStatus(204);
-    }).catch((error) => {
-        res.status(500);
-        res.send({
-            message: `Error sending message: ${error}`
-        });
     });
 });
 
@@ -113,6 +98,32 @@ passport.deserializeUser(function (user, cb) {
         return cb(null, user);
     });
 });
+
+app.post(
+    '/send-notification',
+    hasFields(['token', 'message']),
+    function (req, res) {
+        const body = req.body;
+        const message = {
+            data: {
+                message: body.message,
+            },
+            token: body.token,
+        };
+        getMessaging()
+            .send(message)
+            .then((response) => {
+                res.sendStatus(204);
+            })
+            .catch((error) => {
+                res.status(500);
+                res.send({
+                    error: `Error sending message: ${error}`,
+                });
+            });
+    }
+);
+
 app.get('/send-notification/:token', function (req, res) {
     const body = req.body;
     const token = req.params.token;
