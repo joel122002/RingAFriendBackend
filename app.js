@@ -141,12 +141,22 @@ app.post(
     isAuthenticated,
     hasFields(['token', 'device_name']),
     async function (req, res) {
-        const body = req.body;
-        let response = await client.query(
-            'INSERT INTO main.user_devices (user_id, token, device_name) VALUES ($1::uuid, $2::text, $3::varchar) RETURNING *',
-            [req.user.id, body.token, body.device_name]
-        );
-        res.sendStatus(204);
+        try {
+            const body = req.body;
+            let response = await client.query(
+                'INSERT INTO main.user_devices (user_id, token, device_name) VALUES ($1::uuid, $2::text, $3::varchar) RETURNING *',
+                [req.user.id, body.token, body.device_name]
+            );
+            res.sendStatus(204);
+        } catch (e) {
+            console.error(e);
+            if (e.code === '23505') {
+                res.status(400);
+                return res.send({
+                    error: 'Device already registered',
+                });
+            }
+        }
     }
 );
 
