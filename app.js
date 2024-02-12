@@ -263,6 +263,15 @@ app.post(
     }
 );
 
+app.get('/profile', isAuthenticated, async function (req, res) {
+    const response = await client.query(
+        'SELECT * FROM main.users WHERE id = $1::uuid;',
+        [req.user.id]
+    );
+    const row = response.rows[0];
+    return res.send({
+        username: row.username,
+        join_date: row.join_date,
     });
 });
 
