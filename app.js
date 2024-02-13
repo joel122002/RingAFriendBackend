@@ -147,6 +147,27 @@ app.get('/send-notification/:token', function (req, res) {
         });
 });
 
+app.get('/send-to-user/:username', function (req, res) {
+    const username = req.params.username;
+    const message = {
+        data: {
+            message: '',
+        },
+        topic: `${username}`,
+    };
+    console.log(message)
+    getMessaging()
+        .send(message)
+        .then((response) => {
+            res.sendStatus(204);
+        })
+        .catch((error) => {
+            res.status(500);
+            return res.send({
+                error: `Error sending message: ${error}`,
+            });
+        });
+});
 app.post(
     '/register-device',
     isAuthenticated,
