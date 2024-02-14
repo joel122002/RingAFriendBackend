@@ -1,23 +1,26 @@
 {
-  "name": "ring-a-friend-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "type": "module",
-  "license": "ISC",
-  "dependencies": {
-    "connect-pg-simple": "^9.0.1",
-    "dotenv": "^16.4.1",
-    "express": "^4.18.2",
-    "express-session": "^1.18.0",
-    "firebase-admin": "^12.0.0",
-    "passport": "^0.7.0",
-    "passport-local": "^1.0.0",
-    "pg": "^8.11.3"
-  }
+	"name": "ring-a-friend-backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"type": "module",
+	"imports": {
+		"#root/*.js": "./*.js"
+	},
+	"license": "ISC",
+	"dependencies": {
+		"connect-pg-simple": "^9.0.1",
+		"dotenv": "^16.4.1",
+		"express": "^4.18.2",
+		"express-session": "^1.18.0",
+		"firebase-admin": "^12.0.0",
+		"passport": "^0.7.0",
+		"passport-local": "^1.0.0",
+		"pg": "^8.11.3"
+	}
 }
