@@ -48,3 +48,17 @@ export function isAuthenticated(req, res, next) {
         return res.sendStatus(401);
     }
 }
+
+export function satisfiesBaseVersion(req, res, next) {
+    var headers = req.headers;
+	if (!headers.hasOwnProperty('version')) {
+		res.status(400);
+		return res.send({ error: "'version' header missing" });
+	}
+	var version = Number(headers.version);
+	if (version < 1) {
+		res.status(400);
+		return res.send({ error: 'Update the app' });
+	}
+	next();
+}
