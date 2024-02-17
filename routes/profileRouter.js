@@ -27,6 +27,9 @@ profileRouter.get('/send-to-user/:username', function (req, res) {
 			message: '',
 		},
 		topic: `${username}`,
+		android: {
+			priority: 'high'
+		}
 	};
 	console.log(message);
 	getMessaging()
