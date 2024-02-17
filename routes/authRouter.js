@@ -5,6 +5,7 @@ import {
 	validateKeys,
 } from '#root/middleware/utils.js'
 import { emailValidator, usernameValidator } from '#root/utils/validators.js';
+import * as crypto from 'crypto';
 
 const authRouter = express.Router();
 
