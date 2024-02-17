@@ -45,7 +45,7 @@ profileRouter.get('/send-to-user/:username', function (req, res) {
 profileRouter.get('/get-all-users', isAuthenticated, async function (req, res) {
 	const response = await client.query('SELECT username FROM main.users;');
 	const row = response.rows;
-	return res.send({usernames: row});
+	return res.send(row);
 });
 
 export { profileRouter };
