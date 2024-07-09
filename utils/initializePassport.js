@@ -66,15 +66,15 @@ export function initializePassport(app, io) {
     const pgPool = new pg.Pool({
         connectionString: `postgres://${process.env.POSTGRESQL_USER}:${process.env.POSTGRESQL_PASSWORD}@${process.env.POSTGRESQL_HOST}/${process.env.POSTGRESQL_DATABASE}`,
     });
-	const sessionMiddleware = session({
-		store: new (PGSimple(session))({
-			pool: pgPool,
-		}),
-		secret: process.env.COOKIE_SECRET,
-		resave: false,
-		cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
-		// Insert express-session options here
-	})
+    const sessionMiddleware = session({
+        store: new (PGSimple(session))({
+            pool: pgPool,
+        }),
+        secret: process.env.COOKIE_SECRET,
+        resave: false,
+        cookie: { maxAge: 10 * 365 * 24 * 60 * 60 * 1000 }, // 10 years
+        // Insert express-session options here
+    });
     app.use(sessionMiddleware);
 
     app.use(passport.initialize());
