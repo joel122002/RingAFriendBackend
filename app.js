@@ -10,6 +10,7 @@ import { initializePassport } from '#root/utils/initializePassport.js';
 import { profileRouter } from '#root/routes/profileRouter.js';
 import { deviceRouter } from '#root/routes/deviceRouter.js';
 import { Server } from 'socket.io';
+import initializeSocket from '#root/socket.js';
 
 const app = express();
 admin.initializeApp({
@@ -26,26 +27,7 @@ const io = new Server(server);
 
 initializePassport(app, io);
 
-io.on('connection', (socket) => {
-    const userId = socket.request.user.username;
-
-    socket.on('join', function (room) {
-        socket.join(room);
-        console.log(`${userId} joined room: ${room}`);
-    });
-
-    socket.on('message', function (message) {
-        console.log(message);
-        io.emit('message', message);
-        // socket.disconnect()
-    });
-
-    socket.on('messageToGroup', function ({ room, message }) {
-        const clients = io.sockets.adapter.rooms.get('Room Name');
-        io.to(room).emit('message', message);
-        console.log(`${userId} emitted ${message} to ${room}`);
-    });
-});
+initializeSocket(io);
 
 app.use(authRouter);
 app.use(profileRouter);
