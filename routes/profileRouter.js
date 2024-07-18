@@ -14,10 +14,15 @@ profileRouter.get('/profile', isAuthenticated, async function (req, res) {
         [req.user.id]
     );
     const row = response.rows[0];
+    if (row) {
+        return res.send({
+            username: row.username,
+            join_date: row.join_date,
+        });
+    }
     return res.send({
-        username: row.username,
-        join_date: row.join_date,
-    });
+        error: "User does not exist"
+    }, 400)
 });
 
 profileRouter.get('/send-to-user/:username', function (req, res) {
