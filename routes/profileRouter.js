@@ -38,8 +38,9 @@ profileRouter.get(
 
 profileRouter.get('/send-to-user/:username', function (req, res) {
     const username = req.params.username;
+    const userMessage = req.body.message
     const message = {
-        data: { username: username },
+        data: { username: username, message: userMessage},
         topic: `${username}`,
         android: {
             priority: 'high',
