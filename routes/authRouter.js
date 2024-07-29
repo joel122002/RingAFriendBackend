@@ -1,45 +1,46 @@
 import express, { Router } from 'express';
 import passport from 'passport';
-import { hasFields, validateKeys } from '#root/middleware/utils.js';
+import { hasFields, satisfiesBaseVersion, validateKeys } from '#root/middleware/utils.js';
 import { emailValidator, usernameValidator } from '#root/utils/validators.js';
 import * as crypto from 'crypto';
 import client from '#root/db.js';
 
 const authRouter = express.Router();
 
-authRouter.post('/login', function (req, res, next) {
-	passport.authenticate('local', function (err, user, info) {
-		if (err) {
-			return next(err);
-		}
-		if (!user) {
-			res.status(400);
-			return res.send({
-				error: 'Incorrect username or password',
-			});
-		}
-		// req / res held in closure
-		req.logIn(user, function (err) {
-			if (err) {
-				return next(err);
-			}
-			res.status(204);
-			return res.send();
-		});
-	})(req, res, next);
+authRouter.post('/login', satisfiesBaseVersion, function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            res.status(400);
+            return res.send({
+                error: 'Incorrect username or password',
+            });
+        }
+        // req / res held in closure
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            res.status(204);
+            return res.send();
+        });
+    })(req, res, next);
 });
 
-authRouter.post('/logout', function (req, res, next) {
-	req.logout(function (err) {
-		if (err) {
-			return next(err);
-		}
-		res.sendStatus(204);
-	});
+authRouter.post('/logout', satisfiesBaseVersion, function (req, res, next) {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.sendStatus(204);
+    });
 });
 
 authRouter.post(
 	'/signup',
+	satisfiesBaseVersion,
 	hasFields(['username', 'email', 'password']),
 	validateKeys(['username', 'email'], [usernameValidator, emailValidator]),
 	function (req, res, next) {

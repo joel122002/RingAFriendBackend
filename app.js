@@ -19,8 +19,6 @@ admin.initializeApp({
 
 app.use(express.json());
 
-// Check if version is passed
-app.use(satisfiesBaseVersion);
 
 const server = app.listen(3000);
 const io = new Server(server);

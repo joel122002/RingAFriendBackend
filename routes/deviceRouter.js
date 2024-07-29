@@ -5,36 +5,42 @@ import express from 'express';
 import {
 	hasFields,
 	isAuthenticated,
+	satisfiesBaseVersion,
 } from '#root/middleware/utils.js';
 import { getMessaging } from 'firebase-admin/messaging';
 import client from '#root/db.js';
 
 const deviceRouter = express.Router();
 
-deviceRouter.get('/send-notification/:token', function (req, res) {
-	const token = req.params.token;
-	console.log(token, req.params);
-	const message = {
-		data: {
-			message: '',
-		},
-		token: token,
-	};
-	getMessaging()
-		.send(message)
-		.then((response) => {
-			res.sendStatus(204);
-		})
-		.catch((error) => {
-			res.status(500);
-			return res.send({
-				error: `Error sending message: ${error}`,
-			});
-		});
-});
+deviceRouter.get(
+    '/send-notification/:token',
+    satisfiesBaseVersion,
+    function (req, res) {
+        const token = req.params.token;
+        console.log(token, req.params);
+        const message = {
+            data: {
+                message: '',
+            },
+            token: token,
+        };
+        getMessaging()
+            .send(message)
+            .then((response) => {
+                res.sendStatus(204);
+            })
+            .catch((error) => {
+                res.status(500);
+                return res.send({
+                    error: `Error sending message: ${error}`,
+                });
+            });
+    }
+);
 
 deviceRouter.post(
 	'/register-device',
+	satisfiesBaseVersion,
 	isAuthenticated,
 	hasFields(['token', 'device_name']),
 	async function (req, res) {
