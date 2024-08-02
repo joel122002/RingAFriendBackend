@@ -56,7 +56,7 @@ export function satisfiesBaseVersion(req, res, next) {
 		return res.send({ error: "'version' header missing" });
 	}
 	var version = Number(headers.version);
-	if (version < 1) {
+	if (version < 3) {
 		res.status(400);
 		return res.send({ error: 'Update the app' });
 	}
