@@ -36,7 +36,7 @@ profileRouter.get(
     }
 );
 
-profileRouter.get('/send-to-user/:username', function (req, res) {
+profileRouter.post('/send-to-user/:username', function (req, res) {
     const username = req.params.username;
     var userMessage = req.body.message;
     if (!userMessage) {
