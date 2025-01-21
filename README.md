@@ -37,6 +37,7 @@ POSTGRESQL_DATABASE="ringafriend" # do not change
 COOKIE_SECRET="Your cookie secret here"
 
 ```
+Get your firebase admin sdk json from [here](https://firebase.google.com/docs/admin/setup) and add it to the root of you project named as `firebase-admin-sdk.json`
 Run the app
 ```bash
   node app.js 
