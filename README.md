@@ -4,7 +4,7 @@ Ring A Friend is an app designed to call make a phone ring, even when it's on si
 
 ## Pre-requisites
 - [NodeJS](https://nodejs.org/en/download/) (I'm using v16.20.0)
-- [PostgreSQL](https://www.postgresql.org/download/) (I'm using v16.1)
+- [PostgreSQL](https://www.postgresql.org/download/) (I'm using v16.1 with password authentication)
 
 ## Installation
 Clone the app
