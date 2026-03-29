@@ -3,7 +3,7 @@ import passport from 'passport';
 import { hasFields, satisfiesBaseVersion, validateKeys } from '#root/middleware/utils.js';
 import { emailValidator, usernameValidator } from '#root/utils/validators.js';
 import * as crypto from 'crypto';
-import client from '#root/db.js';
+import pool from '#root/db.js';
 
 const authRouter = express.Router();
 
@@ -56,7 +56,7 @@ authRouter.post(
 					return next(err);
 				}
 				try {
-					let response = await client.query(
+					let response = await pool.query(
 						'INSERT INTO main.users (email, username, hashed_password, salt, join_date) VALUES ($1::varchar, $2, $3::bytea, $4::bytea, current_timestamp) RETURNING *',
 						[
 							req.body.email,

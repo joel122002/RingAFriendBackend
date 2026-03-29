@@ -8,7 +8,7 @@ import {
 	satisfiesBaseVersion,
 } from '#root/middleware/utils.js';
 import { getMessaging } from 'firebase-admin/messaging';
-import client from '#root/db.js';
+import pool from '#root/db.js';
 
 const deviceRouter = express.Router();
 
@@ -46,7 +46,7 @@ deviceRouter.post(
 	async function (req, res) {
 		try {
 			const body = req.body;
-			let response = await client.query(
+			let response = await pool.query(
 				'INSERT INTO main.user_devices (user_id, token, device_name) VALUES ($1::uuid, $2::text, $3::varchar) RETURNING *',
 				[req.user.id, body.token, body.device_name]
 			);

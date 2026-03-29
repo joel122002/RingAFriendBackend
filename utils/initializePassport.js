@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import LocalStrategy from 'passport-local';
 import pg from 'pg';
 import dotenv from 'dotenv';
-import client from '#root/db.js';
+import pool from '#root/db.js';
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ export function initializePassport(app, io) {
     passport.use(
         new LocalStrategy(async function verify(username, password, cb) {
             try {
-                const res = await client.query(
+                const res = await pool.query(
                     'SELECT * FROM main.users WHERE username = $1::text;',
                     [username]
                 );

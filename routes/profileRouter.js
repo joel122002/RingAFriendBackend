@@ -7,7 +7,7 @@ import {
     satisfiesBaseVersion,
 } from '#root/middleware/utils.js';
 import { getMessaging } from 'firebase-admin/messaging';
-import client from '#root/db.js';
+import pool from '#root/db.js';
 
 const profileRouter = express.Router();
 
@@ -16,7 +16,7 @@ profileRouter.get(
     isAuthenticated,
     satisfiesBaseVersion,
     async function (req, res) {
-        const response = await client.query(
+        const response = await pool.query(
             'SELECT * FROM main.users WHERE id = $1::uuid;',
             [req.user.id]
         );
@@ -69,7 +69,7 @@ profileRouter.get(
     isAuthenticated,
     async function (req, res) {
         const username = req.user.username;
-        const response = await client.query(
+        const response = await pool.query(
             'SELECT username FROM main.users WHERE username <> $1;',
             [username]
         );
